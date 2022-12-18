@@ -143,4 +143,32 @@ const getAllProperties = function(options, limit = 10) {
     .then((res) => res.rows)
     .catch((err) => {console.log(err.message);});
 }
+exports.getAllProperties = getAllProperties;
+
+
+
+const addProperty = function(property) {
+  const queryString = `
+  INSERT INTO properties (
+    title,
+    description, 
+    number_of_bedrooms,
+    number_of_bathrooms,
+    parking_spaces,
+    cost_per_night,
+    thumbnail_photo_url,
+    cover_photo_url,
+    street,
+    country,
+    city, 
+    province,
+    post_code,
+    owner_id) 
+  VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14) 
+  RETURNING *;
+  `
+  return pool.query(queryString, Object.values(property))
+    .then((res) => res.rows[0])
+    .catch((err) => {console.log(err.message);});
+}
 exports.addProperty = addProperty;
